@@ -1,0 +1,19 @@
+{
+  "name": "dchess",
+  "version": "1.0.0",
+  "description": "Play chess, but now on blockchain. ",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "web3",
+    "etheruem",
+    "chess"
+  ],
+  "author": "EshaanAgg",
+  "license": "ISC",
+  "dependencies": {
+    "hardhat": "^2.17.2"
+  }
+}
