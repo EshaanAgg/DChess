@@ -10,7 +10,9 @@ Play your favourite game, but now on the Etheruem blockchain.
 
 We are using `hardhat` to setup a local test network on which we would be running the application.
 
-1. Compile the contracts by running `npx hardhat compile.`
+1. Compile the contracts (generate their types, ABI, and bytecode) by running `npx hardhat compile`.
+2. Start a local test Ethereum network by running `npx hardhat node`.
+3. In a new terminal run `npx hardhat run scripts/HelloWorld.ts --network localhost` to deploy the smart contract to the test blockchain.
 
 ## Key features of the Application
 
