@@ -33,7 +33,8 @@ function Game() {
 				}
 
 				return result;
-			} catch (_) {
+			} catch (e) {
+				console.log(e);
 				toast.error("Not a valid move!");
 				// Null if the move was illegal
 				return null;
@@ -57,7 +58,7 @@ function Game() {
 		};
 
 		const move = makeAMove(moveData);
-		if (move !== null && !chess.isGameOver()) {
+		if (move !== null && !chess.isGameOver() && chess.turn() === "b") {
 			makeRandomMove();
 			setFen(chess.fen());
 		}

@@ -5,6 +5,7 @@ Play your favourite game, but now on the Etheruem blockchain.
 ## Contracts
 
 - [Hello World](./contracts/HelloWorld.sol): A simple hello world contract that can be used to test the setting up of the environemnt.
+- [Dchess](./contracts/Dchess.sol): Contains the contract that implements the chess application.
 
 ## Development Setup and Running the App
 
@@ -15,6 +16,16 @@ We are using `hardhat` to setup a local test network on which we would be runnin
 3. In a new terminal run `npx hardhat run scripts/HelloWorld.ts --network localhost` to deploy the smart contract to the test blockchain.
 
 ## Key features of the Application
+
+Each game on the contract is stored as a struct `Game`, which only keeps track of three essential items:
+
+- `White`: The player who moved first.
+- `Moves`: Each move is a 16 bit unsigned integer, where the least significant 6 bits represents the position on the chessboard from which the move was made, and the next 6 bits represent the position to which the move was made. This allows us to store a move in the game in just `12` bits (rounded up to `16` during implementation) which is the most precise and memory efficient manner of tracking all the moves to reconstruct the game.
+- `Result`: Stores the result of the game as an enum.
+
+The contract provides support for both the cases: against other players or againt a computer. All of the fucntions in the [DChess contract](./contracts/Dchess.sol) have been documented, and are suplemented with `require` statements to ensure that the fucntion is being called from authorized accounts only.
+
+The contract also expects a fee of `0.05 ethers` per game to demonstrate the option of making the same a paid service.
 
 ### Client
 
