@@ -32,7 +32,6 @@ const MetaMaskContext = createContext<MetaMaskContextData>({} as MetaMaskContext
 
 export const MetaMaskContextProvider = ({ children }: PropsWithChildren) => {
 	const [hasProvider, setHasProvider] = useState<boolean | null>(null);
-
 	const [isConnecting, setIsConnecting] = useState(false);
 
 	const [errorMessage, setErrorMessage] = useState("");

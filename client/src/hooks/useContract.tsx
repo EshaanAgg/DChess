@@ -1,5 +1,12 @@
 import { Contract, ethers } from "ethers";
-import { useState, createContext, PropsWithChildren, useContext, useEffect } from "react";
+import {
+	useState,
+	createContext,
+	PropsWithChildren,
+	useContext,
+	useEffect,
+	useCallback,
+} from "react";
 import contractAddress from "../data/contracts/DChess/address.json";
 import contractArtifact from "../data/contracts/DChess/artifact.json";
 import { useMetaMask } from "./useMetaMask";
@@ -17,7 +24,7 @@ export const ContractContextProvider = ({ children }: PropsWithChildren) => {
 
 	const { hasProvider } = useMetaMask();
 
-	const getContract = async () => {
+	const getContract = useCallback(async () => {
 		if (hasProvider) {
 			setLoading(true);
 
@@ -28,11 +35,11 @@ export const ContractContextProvider = ({ children }: PropsWithChildren) => {
 			console.log(contract);
 			setLoading(false);
 		}
-	};
+	}, [hasProvider]);
 
 	useEffect(() => {
 		getContract();
-	});
+	}, [getContract]);
 
 	return (
 		<ContractContext.Provider
