@@ -1,14 +1,14 @@
-import React from "react";
-import Game from "../components/Game";
-import AccountDetails from "../components/AccountDetails";
+import React from 'react';
+import Game from '../components/Game';
+import AccountDetails from '../components/AccountDetails';
 
 const Home = () => {
-	return (
-		<>
-			<AccountDetails />
-			<Game />
-		</>
-	);
+  return (
+    <>
+      <AccountDetails />
+      <Game />
+    </>
+  );
 };
 
 export default Home;
