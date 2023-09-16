@@ -7,6 +7,11 @@ const config: HardhatUserConfig = {
 	paths: {
 		tests: "./tests",
 	},
+	networks: {
+		hardhat: {
+			chainId: 1337,
+		},
+	},
 };
 
 export default config;

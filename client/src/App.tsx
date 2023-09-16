@@ -30,8 +30,8 @@ function App() {
 
   return (
     <div className="App">
-      <Home />
       <ToastContainer />
+      <Home />
     </div>
   );
 }

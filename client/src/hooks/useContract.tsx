@@ -9,7 +9,6 @@ import {
 } from 'react';
 import contractAddress from '../data/contracts/DChess/address.json';
 import contractArtifact from '../data/contracts/DChess/artifact.json';
-import { useMetaMask } from './useMetaMask';
 
 interface ContractContextData {
   contract: Contract | null;
@@ -22,20 +21,18 @@ export const ContractContextProvider = ({ children }: PropsWithChildren) => {
   const [contract, setContract] = useState<null | Contract>(null);
   const [loading, setLoading] = useState(false);
 
-  const { hasProvider } = useMetaMask();
-
   const getContract = useCallback(async () => {
-    if (hasProvider) {
+    if (window.ethereum) {
       setLoading(true);
 
       const provider = new ethers.BrowserProvider(window.ethereum);
       const signer = await provider.getSigner();
       const contract = new ethers.Contract(contractAddress.address, contractArtifact.abi, signer);
       setContract(contract);
-      console.log(contract);
+
       setLoading(false);
     }
-  }, [hasProvider]);
+  }, []);
 
   useEffect(() => {
     getContract();
