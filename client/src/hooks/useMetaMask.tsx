@@ -7,6 +7,9 @@ import React, {
   useCallback
 } from 'react';
 import detectEthereumProvider from '@metamask/detect-provider';
+import contractAddress from '../data/contracts/DChess/address.json';
+import contractArtifact from '../data/contracts/DChess/artifact.json';
+import { Contract, ethers } from 'ethers';
 import { formatBalance } from '../utils';
 
 interface WalletState {
@@ -21,7 +24,8 @@ interface MetaMaskContextData {
   error: boolean;
   errorMessage: string;
   isConnecting: boolean;
-  connectMetaMask: () => void;
+  contract: null | Contract;
+  connectContract: () => void;
   clearError: () => void;
 }
 
@@ -31,12 +35,14 @@ const MetaMaskContext = createContext<MetaMaskContextData>({} as MetaMaskContext
 
 export const MetaMaskContextProvider = ({ children }: PropsWithChildren) => {
   const [hasProvider, setHasProvider] = useState<boolean | null>(null);
+  const [contract, setContract] = useState<null | Contract>(null);
   const [isConnecting, setIsConnecting] = useState(false);
 
   const [errorMessage, setErrorMessage] = useState('');
   const clearError = () => setErrorMessage('');
 
   const [wallet, setWallet] = useState(disconnectedState);
+
   // useCallback ensures that you don't uselessly recreate the _updateWallet function on every render
   const _updateWallet = useCallback(async (providedAccounts?: any) => {
     const accounts =
@@ -90,7 +96,7 @@ export const MetaMaskContextProvider = ({ children }: PropsWithChildren) => {
     };
   }, [updateWallet, updateWalletAndAccounts]);
 
-  const connectMetaMask = async () => {
+  const connectToContract = async () => {
     setIsConnecting(true);
 
     try {
@@ -99,11 +105,21 @@ export const MetaMaskContextProvider = ({ children }: PropsWithChildren) => {
       });
       clearError();
       updateWallet(accounts);
+
+      const provider = new ethers.BrowserProvider(window.ethereum);
+      const signer = await provider.getSigner();
+      const contract = new ethers.Contract(contractAddress.address, contractArtifact.abi, signer);
+
+      setContract(contract);
     } catch (err: any) {
       setErrorMessage(err.message);
     }
     setIsConnecting(false);
   };
+
+  const connectContract = useCallback(() => {
+    connectToContract();
+  }, []);
 
   return (
     <MetaMaskContext.Provider
@@ -113,8 +129,9 @@ export const MetaMaskContextProvider = ({ children }: PropsWithChildren) => {
         error: !!errorMessage,
         errorMessage,
         isConnecting,
-        connectMetaMask,
-        clearError
+        connectContract,
+        clearError,
+        contract
       }}>
       {children}
     </MetaMaskContext.Provider>
